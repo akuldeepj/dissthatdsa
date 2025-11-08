@@ -60,22 +60,22 @@ function UnderlineDemo() {
   const contributors = [
     {
         name: "Vardaan Bhatia",
-        imageUrl: "https://media.licdn.com/dms/image/v2/D5603AQHcFSqG5EiKRg/profile-displayphoto-scale_400_400/B56Zkno_i7HAAg-/0/1757306688429?e=1764201600&v=beta&t=E7xhXiMHBTa7J3Zmw5a7fxvVr4ruWVqSBmIlOaRbMJw", // Replace with actual image URL
+        githubUsername: "vardaanaroracodes", // Update with correct GitHub username
         linkedinUrl: "https://www.linkedin.com/in/vardaan-bhatia12/",
     },
     {
       name: "Lalith Srinandan",
-      imageUrl: "https://media.licdn.com/dms/image/v2/D5603AQF3bMebQAIR5w/profile-displayphoto-shrink_400_400/profile-displayphoto-shrink_400_400/0/1726165580284?e=1764201600&v=beta&t=ku9XDluWxYjyyg4uJPQ1bYxREu9Cbwd6p3zf7YmZD_k", // Replace with actual image URL
+      githubUsername: "lalith454545", // Update with correct GitHub username
       linkedinUrl: "https://www.linkedin.com/in/lalith-srinandan-920540267/",
     },
     {
       name: "Srikar Veluvali",
-      imageUrl: "https://media.licdn.com/dms/image/v2/D5603AQGP9tuTieEDVg/profile-displayphoto-scale_400_400/B56Znsl_3HH8Ag-/0/1760611008827?e=1764201600&v=beta&t=tAumPCPEfF23uDzl4k0e5lhsRL2ZyvSRNhNdZu-ufT4", // Replace with actual image URL
+      githubUsername: "srikarveluvali", // Update with correct GitHub username
       linkedinUrl: "https://www.linkedin.com/in/srikarveluvali/",
     },
     {
       name: "Akuldeep Jakkula",
-      imageUrl: "https://media.licdn.com/dms/image/v2/D5603AQEU9lv5rI-e2w/profile-displayphoto-shrink_400_400/profile-displayphoto-shrink_400_400/0/1707924952974?e=1764201600&v=beta&t=PEebPPZCeLR_CT0i9agIWi2O2JXuFYM9XLv5MUNXPrk", // Replace with actual image URL
+      githubUsername: "akuldeepj", // Update with correct GitHub username
       linkedinUrl: "https://www.linkedin.com/in/akuldeepj/",
     },
   ];

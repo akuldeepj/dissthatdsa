@@ -7,11 +7,13 @@ import { motion } from 'framer-motion';
 
 interface ContributorProps {
   name: string;
-  imageUrl: string;
+  githubUsername: string;
   linkedinUrl: string;
 }
 
-export function ContributorCard({ name, imageUrl, linkedinUrl }: ContributorProps) {
+export function ContributorCard({ name, githubUsername, linkedinUrl }: ContributorProps) {
+  const githubImageUrl = `https://github.com/${githubUsername}.png`;
+  
   return (
     <Link 
       href={linkedinUrl} 
@@ -26,7 +28,7 @@ export function ContributorCard({ name, imageUrl, linkedinUrl }: ContributorProp
       >
         <div className="relative w-20 h-20 md:w-32 md:h-32 rounded-full overflow-hidden bg-zinc-800 ring-2 ring-zinc-700 hover:ring-white transition-all">
           <Image
-            src={imageUrl}
+            src={githubImageUrl}
             alt={name}
             fill
             className="object-cover"

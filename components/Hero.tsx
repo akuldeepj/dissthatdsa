@@ -8,11 +8,11 @@ export default function RetroHero() {
   const gridColor = "#ff0000"; // Red grids
   const showScanlines = true;
   const glowEffect = true;
-  const [isMuted, setIsMuted] = useState(false);
+  const [isMuted, setIsMuted] = useState(true);
   const [hasStarted, setHasStarted] = useState(false);
   const audioRef = useRef<HTMLAudioElement>(null);
   const hasInteractedRef = useRef(false);
-  const isMutedRef = useRef(false);
+  const isMutedRef = useRef(true);
   const hasStartedRef = useRef(false);
 
   // Sync refs with state
