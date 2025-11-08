@@ -197,7 +197,7 @@ export default function RetroHero() {
         <div className="flex flex-col sm:flex-row gap-6 mt-8">
           {/* Resources Button */}
           <a 
-            href="https://drive.google.com" 
+            href="https://drive.google.com/drive/folders/1P3AOR1Zk3MzKz8hFL6VKXD45GtVBHt6l" 
             target="_blank" 
             rel="noopener noreferrer"
             className="group relative px-10 py-4 bg-transparent border-2 border-white text-white font-bold text-lg uppercase tracking-wider overflow-hidden transition-all duration-300 hover:text-black hover:shadow-[0_0_40px_#ffffff] hover:scale-105 active:scale-95 inline-block text-center"
