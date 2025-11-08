@@ -11,13 +11,23 @@ export default function RetroHero() {
   const [isMuted, setIsMuted] = useState(false);
   const [hasStarted, setHasStarted] = useState(false);
   const audioRef = useRef<HTMLAudioElement>(null);
+  const hasInteractedRef = useRef(false);
+  const isMutedRef = useRef(false);
+  const hasStartedRef = useRef(false);
+
+  // Sync refs with state
+  useEffect(() => {
+    isMutedRef.current = isMuted;
+    hasStartedRef.current = hasStarted;
+  }, [isMuted, hasStarted]);
 
   useEffect(() => {
     const audio = audioRef.current;
     if (!audio) return;
 
     // Handle audio errors
-    const handleError = () => {
+    const handleError = (e: Event) => {
+      console.error("Audio error:", audio.error);
       if (audio.error) {
         const error = audio.error;
         let errorMessage = "Unknown audio error";
@@ -40,70 +50,24 @@ export default function RetroHero() {
       }
     };
 
+    const handleCanPlay = () => {
+      console.log("Audio can play - readyState:", audio.readyState);
+    };
+
     audio.addEventListener("error", handleError);
+    audio.addEventListener("canplay", handleCanPlay);
     
     // Set volume to maximum
     audio.volume = 1;
-
-    // Function to start playing audio
-    const playAudio = async () => {
-      if (!audio || hasStarted || isMuted) return;
-      
-      try {
-        // Ensure audio is loaded
-        if (audio.readyState < 2) {
-          audio.load();
-          // Wait for audio to be ready
-          await new Promise((resolve) => {
-            const checkReady = () => {
-              if (audio.readyState >= 2) {
-                resolve(undefined);
-              } else {
-                setTimeout(checkReady, 50);
-              }
-            };
-            checkReady();
-          });
-        }
-        
-        // Try to play
-        await audio.play();
-        setHasStarted(true);
-        setIsMuted(false);
-        console.log("Audio started playing");
-      } catch (error) {
-        console.log("Could not play audio:", error);
-      }
-    };
-
-    // Listen for mouse movement/hover to start audio
-    let hasTriedToStart = false;
-    const startOnInteraction = () => {
-      if (!hasTriedToStart && !hasStarted && !isMuted) {
-        hasTriedToStart = true;
-        playAudio();
-      }
-    };
-
-    // Add event listeners for mouse interactions on window
-    window.addEventListener("mouseenter", startOnInteraction, { once: true });
-    window.addEventListener("mousemove", startOnInteraction, { once: true });
-    document.addEventListener("mousemove", startOnInteraction, { once: true });
-    document.addEventListener("click", startOnInteraction, { once: true });
-    document.addEventListener("touchstart", startOnInteraction, { once: true });
-
-    // Load audio
+    
+    // Pre-load the audio so it's ready when user interacts
     audio.load();
 
     return () => {
-      window.removeEventListener("mouseenter", startOnInteraction);
-      window.removeEventListener("mousemove", startOnInteraction);
-      document.removeEventListener("mousemove", startOnInteraction);
-      document.removeEventListener("click", startOnInteraction);
-      document.removeEventListener("touchstart", startOnInteraction);
       audio.removeEventListener("error", handleError);
+      audio.removeEventListener("canplay", handleCanPlay);
     };
-  }, [hasStarted, isMuted]);
+  }, []);
 
   const toggleMute = async () => {
     const audio = audioRef.current;
@@ -136,27 +100,54 @@ export default function RetroHero() {
     }
   };
 
-  const handleMouseMove = () => {
-    if (!hasStarted && !isMuted) {
+  const handleUserInteraction = (e?: React.MouseEvent | React.TouchEvent) => {
+    // Prevent event from bubbling if it's a click on interactive elements
+    if (e && (e.target as HTMLElement).closest('a, button')) {
+      return;
+    }
+    
+    if (!hasInteractedRef.current && !hasStartedRef.current && !isMutedRef.current) {
+      hasInteractedRef.current = true;
       const audio = audioRef.current;
       if (audio) {
-        audio.play()
-          .then(() => {
-            setHasStarted(true);
-            setIsMuted(false);
-          })
-          .catch(() => {
-            // Failed to play
-          });
+        console.log("Direct interaction - attempting to play audio, readyState:", audio.readyState);
+        audio.volume = 1;
+        
+        // CRITICAL: Call play() immediately without any async delays
+        // This must happen synchronously in response to the user gesture
+        const playPromise = audio.play();
+        
+        if (playPromise !== undefined) {
+          playPromise
+            .then(() => {
+              hasStartedRef.current = true;
+              isMutedRef.current = false;
+              setHasStarted(true);
+              setIsMuted(false);
+              console.log("✅ Audio started via direct interaction!");
+            })
+            .catch((error) => {
+              console.error("❌ Could not play audio on direct interaction:", error);
+              // Reset the flag so user can try again
+              hasInteractedRef.current = false;
+            });
+        }
       }
+    }
+  };
+
+  const handleMouseMove = (e: React.MouseEvent) => {
+    if (!hasInteractedRef.current) {
+      handleUserInteraction(e);
     }
   };
 
   return (
     <div 
       className="relative w-full h-screen bg-black overflow-hidden"
+      onClick={handleUserInteraction}
       onMouseMove={handleMouseMove}
-      onMouseEnter={handleMouseMove}
+      onTouchStart={handleUserInteraction}
     >
       {/* Audio Element */}
       <audio

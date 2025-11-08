@@ -51,7 +51,7 @@ function RetroGrid({
     const focalLength = 500;
 
     let offset = 0;
-    const speed = 1.5;
+    const speed = 5;
 
     const project3DTo2D = (x: number, y: number, z: number) => {
       const relX = x - cameraX;
